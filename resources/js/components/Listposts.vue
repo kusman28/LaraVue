@@ -20,7 +20,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(post, index) in filteredPosts">
+				<tr v-for="(post, index) in posts.data">
 					<td>{{ index + 1 }}</td>
 					<td>{{ post.title }}</td>
 					<td>{{ post.body }}</td>
@@ -30,15 +30,47 @@
 						<router-link class="btn btn-danger btn-sm" v-bind:to="{name: 'Deletepost', params: {id: post.id}}">Delete <i class="fa fa-trash-o"></i></router-link>
 					</td>
 				</tr>
-			</tbody>	
+			</tbody>
 		</table>
+		<div class="card-footer">
+			<pagination :data="posts" @pagination-change-page="getResults"></pagination>
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
-	data: function() {
-		return { posts: '' };
+	// data: function() {
+	// 	return { 
+	// 		posts: {}
+	// 		};
+	// 	},
+	// 	created: function() {
+	// 		let uri = 'http://127.0.0.1:8000/posts/';
+	// 		Axios.get(uri).then((response) => {
+	// 			this.posts = response.data;
+	// 			});
+	// 		},
+	// 		computed: {
+	// 			filteredPosts: function() {
+	// 				if(this.posts.length) {
+	// 					return this.posts;
+	// 				}
+	// 			}
+	// 		},
+	// 		methods: {
+	// 			// Our method to GET results from a Laravel endpoint
+	// 			getResults(page = 1) {
+	// 				axios.get('http://127.0.0.1:8000/posts?page=' + page)
+	// 				.then(response => {
+	// 					this.posts = response.data;	
+	// 				});
+	// 			}
+	// 		}
+		data() {
+			return { 
+				posts: {}
+			}
 		},
 		created: function() {
 			let uri = 'http://127.0.0.1:8000/posts/';
@@ -46,11 +78,28 @@ export default {
 				this.posts = response.data;
 				});
 			},
-			computed: {
-				filteredPosts: function() {
-					if(this.posts.length) {
-						return this.posts;
-					}
+			// computed: {
+			// 	filteredPosts: function() {
+			// 		if(this.posts.length) {
+			// 			return this.posts;
+			// 		}
+			// 	}
+			// },
+			mounted() {
+				// Fetch initial results
+				this.getResults();
+			},
+			methods: {
+				// filteredPosts(){
+				// 	axios.get('/posts/').then(({ data }) => (this.posts = data));
+				// },
+
+				// Our method to GET results from a Laravel endpoint
+				getResults(page = 1) {
+					axios.get('/posts/?page=' + page)
+					.then(response => {
+						this.posts = response.data;	
+					});
 				}
 			}
 		}

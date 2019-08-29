@@ -18,6 +18,9 @@ const Editpost=Vue.component('Editpost', require('./components/Editpost.vue').de
 const Viewpost=Vue.component('Viewpost', require('./components/Viewpost.vue').default);
 const Deletepost=Vue.component('Deletepost', require('./components/Deletepost.vue').default);
 
+// Pagination
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 // Error Handler
 window.form = Form;
 import Vue from 'vue'
